@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 env:
-  NAME: php7
+  NAME: php
 
 jobs:
   challenge-build:
