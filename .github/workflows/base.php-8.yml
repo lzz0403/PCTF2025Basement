@@ -4,7 +4,7 @@ on:
   push:
     branches: [php8]
     paths:
-      - "base/php/**"
+      - "base/php8/**"
       - ".github/workflows/base.php-8.yml"
   workflow_dispatch:
 
