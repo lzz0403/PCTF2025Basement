@@ -1,15 +1,15 @@
-name: php7.4
+name: php7
 
 on:
   push:
-    branches: [php7.4]
+    branches: [php7]
     paths:
       - "base/php/**"
-      - ".github/workflows/base.php.yml"
+      - ".github/workflows/base.php-7.4.yml"
   workflow_dispatch:
 
 env:
-  NAME: php7.4
+  NAME: php7
 
 jobs:
   challenge-build:
