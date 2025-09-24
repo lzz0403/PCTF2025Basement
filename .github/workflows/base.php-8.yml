@@ -5,11 +5,11 @@ on:
     branches: [php8]
     paths:
       - "base/php/**"
-      - ".github/workflows/base.php.yml"
+      - ".github/workflows/base.php-8.yml"
   workflow_dispatch:
 
 env:
-  NAME: php8
+  NAME: php
 
 jobs:
   challenge-build:
