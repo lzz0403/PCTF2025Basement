@@ -1,3 +1,0 @@
-FROM ghcr.io/gzctf/challenge-base/python:3.12-alpine
-
-RUN pip install --no-cache-dir pycryptodome gmpy2
