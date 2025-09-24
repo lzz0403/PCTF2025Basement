@@ -1,4 +1,4 @@
-name: php8
+name: PHP8
 
 on:
   push:
