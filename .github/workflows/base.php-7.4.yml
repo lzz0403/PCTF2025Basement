@@ -4,7 +4,7 @@ on:
   push:
     branches: ["main"]
     paths:
-      - "base/php72/**"
+      - "base/php7/**"
       - ".github/workflows/base.php-7.4.yml"
   workflow_dispatch:
 
@@ -42,8 +42,8 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
-          context: base/${{ env.NAME }}
-          file: base/${{ env.NAME }}/Dockerfile.7.4
+          context: base/php7
+          file: base/php7/Dockerfile.7.4
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           push: true
