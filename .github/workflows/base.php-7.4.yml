@@ -1,4 +1,4 @@
-name: php7
+name: php72
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  NAME: php7
+  NAME: php72
   TAG: 7.4-alpine
 
 jobs:
