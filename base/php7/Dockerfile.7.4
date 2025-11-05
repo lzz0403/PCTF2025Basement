@@ -3,7 +3,7 @@ FROM php:8.4.13-apache
 RUN usermod -u 1000 www-data && \
     groupmod -g 1000 www-data
 
-COPY php.ini /usr/local/etc/php
+COPY php.ini /usr/local/etc/php/php.ini
 COPY --chown=www-data:www-data index.php /var/www/html
 COPY --chmod=500 init.sh /init.sh
 
