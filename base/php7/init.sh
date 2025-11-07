@@ -1,5 +1,5 @@
 #!/bin/sh
-echo $GZCTF_FLAG > "/$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | head -c 16)"
+echo $GZCTF_FLAG > /flag
 
 unset GZCTF_FLAG
 
