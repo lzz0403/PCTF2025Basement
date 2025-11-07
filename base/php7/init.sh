@@ -1,5 +1,5 @@
 #!/bin/sh
-echo $GZCTF_FLAG > /flag
+echo $GZCTF_FLAG > /love1145141919810
 
 unset GZCTF_FLAG
 
