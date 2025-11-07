@@ -10,7 +10,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  NAME: php72
+  NAME: php73
   TAG: 7.4-alpine
 
 jobs:
