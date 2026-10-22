@@ -1,5 +1,5 @@
 #!/bin/sh
-TMPFILE=$(mktemp /flag_XXXXXX)
+TMPFILE=$(mktemp /flag_XXXXXXXXXXXXX)
 printf '%s\n' "$GZCTF_FLAG" > "$TMPFILE"
 chmod 0644 "$TMPFILE"
 
