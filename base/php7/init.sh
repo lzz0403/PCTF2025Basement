@@ -1,6 +1,7 @@
 #!/bin/sh
-printf '%s\n' "$GZCTF_FLAG" > /love1145141919810
-chmod 0644 /love1145141919810
+FLAGFILE=$(mktemp)
+printf '%s\n' "$GZCTF_FLAG" > "$FLAGFILE"
+chmod 0644 "$FLAGFILE"
 
 unset GZCTF_FLAG
 
