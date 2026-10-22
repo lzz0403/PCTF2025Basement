@@ -1,0 +1,12 @@
+[
+  {
+    "action_name": "PHP 8.5.11 FPM Alpine",
+    "tag": "8.5.11-fpm-alpine"
+  },
+  {
+    "action_name": "PHP 8.5.11",
+    "action_file": "php-7.4",
+    "dockerfile": "Dockerfile.7.4",
+    "tag": "8.5.11-apache"
+  }
+]
