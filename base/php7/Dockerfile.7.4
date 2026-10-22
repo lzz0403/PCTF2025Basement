@@ -5,8 +5,6 @@ RUN usermod -u 1000 www-data && \
     chown root:root /var/www/html && chmod 0755 /var/www/html
 
 COPY php.ini /usr/local/etc/php/php.ini
-COPY zz-security.conf /etc/apache2/conf-available/zz-security.conf
-RUN a2enconf zz-security
 
 COPY --chown=root:root index.php /var/www/html
 COPY --chmod=500 init.sh /init.sh

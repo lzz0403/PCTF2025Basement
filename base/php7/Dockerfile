@@ -9,7 +9,6 @@ RUN apk add --no-cache shadow nginx && \
     ln -sf /dev/stderr /var/log/nginx/error.log
 
 COPY php.ini /usr/local/etc/php/conf.d/php.ini
-COPY zz-fpm-security.conf /usr/local/etc/php-fpm.d/zzzz-security.conf
 COPY nginx.conf /etc/nginx/http.d/default.conf
 COPY --chown=root:root index.php /var/www/html
 COPY --chmod=500 init.sh /init.sh
