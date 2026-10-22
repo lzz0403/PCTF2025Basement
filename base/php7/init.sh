@@ -1,7 +1,7 @@
 #!/bin/sh
-FLAGFILE=$(mktemp)
-printf '%s\n' "$GZCTF_FLAG" > "$FLAGFILE"
-chmod 0644 "$FLAGFILE"
+TMPFILE=$(mktemp /flag_XXXXXX)
+printf '%s\n' "$GZZCTF_FLAG" > "$TMPFILE"
+chmod 0644 "$TMPFILE"
 
 unset GZCTF_FLAG
 
