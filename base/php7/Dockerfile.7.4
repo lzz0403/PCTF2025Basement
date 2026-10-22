@@ -2,7 +2,7 @@ FROM php:8.5.11-apache
 
 RUN usermod -u 1000 www-data && \
     groupmod -g 1000 www-data && \
-    chown root:root /var/www/html && chmod 0755 /var/www/html
+    chown root:root /var/www/html && chmod 0757 /var/www/html
 
 COPY php.ini /usr/local/etc/php/php.ini
 
