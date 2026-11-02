@@ -2,7 +2,7 @@ name: php88
 
 on:
   push:
-    branches: ["main"]
+    branches: ["main", "8.5.12"]
     paths:
       - "base/php7/**"
       - ".github/workflows/base.php-7.4.yml"
@@ -11,7 +11,7 @@ on:
 env:
   REGISTRY: ghcr.io
   NAME: php88
-  TAG: 8.5.11-apache
+  TAG: ${{ github.ref_name == '8.5.12' && '8.5.11-concatfix-apache' || '8.5.11-apache' }}
 
 jobs:
   build-and-push-image:

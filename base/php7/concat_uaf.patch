@@ -1,0 +1,68 @@
+--- a/Zend/zend_operators.c
++++ b/Zend/zend_operators.c
+@@ -2020,6 +2020,8 @@
+ 	zend_string *op1_string, *op2_string;
+ 	bool free_op1_string = false;
+ 	bool free_op2_string = false;
++	bool delayed_old_result = false;
++	zval old_result;
+ 
+ 	do {
+ 		if (EXPECTED(Z_TYPE_P(op1) == IS_STRING)) {
+@@ -2082,7 +2084,8 @@
+ 	if (UNEXPECTED(ZSTR_LEN(op1_string) == 0)) {
+ 		if (EXPECTED(result != op2 || Z_TYPE_P(result) != IS_STRING)) {
+ 			if (result == orig_op1) {
+-				i_zval_ptr_dtor(result);
++				ZVAL_COPY_VALUE(&old_result, result);
++				delayed_old_result = true;
+ 			}
+ 			if (free_op2_string) {
+ 				/* transfer ownership of op2_string */
+@@ -2095,7 +2098,8 @@
+ 	} else if (UNEXPECTED(ZSTR_LEN(op2_string) == 0)) {
+ 		if (EXPECTED(result != op1 || Z_TYPE_P(result) != IS_STRING)) {
+ 			if (result == orig_op1) {
+-				i_zval_ptr_dtor(result);
++				ZVAL_COPY_VALUE(&old_result, result);
++				delayed_old_result = true;
+ 			}
+ 			if (free_op1_string) {
+ 				/* transfer ownership of op1_string */
+@@ -2123,13 +2127,11 @@
+ 		}
+ 
+ 		if (result == op1) {
+-			/* Destroy the old result first to drop the refcount, such that $x .= ...; may happen in-place. */
++			/* Replace the slot before running a potentially reentrant destructor. */
+ 			if (free_op1_string) {
+ 				/* op1_string will be used as the result, so we should not free it */
+-				i_zval_ptr_dtor(result);
+-				/* Set it to NULL in case that the extension will throw an out-of-memory error.
+-				 * Otherwise the shutdown sequence will try to free this again. */
+-				ZVAL_NULL(result);
++				ZVAL_COPY_VALUE(&old_result, result);
++				delayed_old_result = true;
+ 				free_op1_string = false;
+ 			}
+ 			/* special case, perform operations on result */
+@@ -2146,7 +2148,8 @@
+ 			result_str = zend_string_alloc(result_len, 0);
+ 			memcpy(ZSTR_VAL(result_str), ZSTR_VAL(op1_string), op1_len);
+ 			if (result == orig_op1) {
+-				i_zval_ptr_dtor(result);
++				ZVAL_COPY_VALUE(&old_result, result);
++				delayed_old_result = true;
+ 			}
+ 		}
+ 		GC_ADD_FLAGS(result_str, flags);
+@@ -2159,6 +2162,9 @@
+ 	if (free_op1_string) zend_string_release_ex(op1_string, false);
+ 	if (free_op2_string) zend_string_release_ex(op2_string, false);
+ 
++	if (delayed_old_result) {
++		i_zval_ptr_dtor(&old_result);
++	}
+ 	return SUCCESS;
+ }
+ /* }}} */

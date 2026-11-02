@@ -1,12 +1,12 @@
 [
   {
-    "action_name": "PHP 8.5.11 FPM Alpine",
-    "tag": "8.5.11-fpm-alpine"
+    "action_name": "PHP 8.5.11 concat UAF patched FPM Alpine",
+    "tag": "8.5.11-concatfix-fpm-alpine"
   },
   {
-    "action_name": "PHP 8.5.11",
+    "action_name": "PHP 8.5.11 concat UAF patched",
     "action_file": "php-7.4",
     "dockerfile": "Dockerfile.7.4",
-    "tag": "8.5.11-apache"
+    "tag": "8.5.11-concatfix-apache"
   }
 ]

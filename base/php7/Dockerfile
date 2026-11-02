@@ -87,6 +87,7 @@ RUN set -eux; \
 	apk del --no-network .fetch-deps
 
 COPY --chmod=755 upstream/fpm/docker-php-source /usr/local/bin/
+COPY concat_uaf.patch /usr/src/concat_uaf.patch
 
 RUN set -eux; \
 	apk add --no-cache --virtual .build-deps \
@@ -100,6 +101,7 @@ RUN set -eux; \
 		linux-headers \
 		oniguruma-dev \
 		openssl-dev \
+		patch \
 		readline-dev \
 		sqlite-dev \
 	; \
@@ -117,6 +119,7 @@ RUN set -eux; \
 	; \
 	docker-php-source extract; \
 	cd /usr/src/php; \
+	patch -p1 < /usr/src/concat_uaf.patch; \
 	gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)"; \
 	case "$gnuArch" in \
 		'i686-linux-'*) \
