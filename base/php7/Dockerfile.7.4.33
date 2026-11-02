@@ -1,0 +1,33 @@
+FROM php:7.4.33-apache
+
+# The official 7.4 image uses the retired Bullseye package snapshot.
+COPY concat81705_guard.patch /usr/src/concat81705_guard.patch
+RUN set -eux; \
+    sed -i -e '/^deb http:\/\/deb.debian.org/s/^/# /' \
+        -e 's/^# deb http:\/\/snapshot/deb https:\/\/snapshot/' \
+        /etc/apt/sources.list; \
+    apt-get -o Acquire::Check-Valid-Until=false update; \
+    apt-get install -y --no-install-recommends \
+        apache2-dev libargon2-dev libcurl4-openssl-dev libonig-dev \
+        libreadline-dev libsodium-dev libsqlite3-dev libssl-dev \
+        libxml2-dev patch zlib1g-dev; \
+    docker-php-source extract; \
+    cd /usr/src/php; \
+    patch -p1 < /usr/src/concat81705_guard.patch; \
+    ./configure $(php-config --configure-options) \
+        --without-pdo-sqlite --without-sqlite3; \
+    make -j2; \
+    make install; \
+    php -n -r 'if (PHP_VERSION !== "7.4.33" || !extension_loaded("PDO") || extension_loaded("pdo_sqlite") || extension_loaded("sqlite3")) exit(1);'; \
+    docker-php-source delete; \
+    rm -rf /var/lib/apt/lists/*
+
+RUN usermod -u 1000 www-data && \
+    groupmod -g 1000 www-data && \
+    chown root:root /var/www/html && chmod 0757 /var/www/html
+
+COPY php.ini /usr/local/etc/php/php.ini
+COPY --chown=root:root index.php /var/www/html/
+COPY --chmod=500 init.sh /init.sh
+
+CMD ["/init.sh"]

@@ -8,5 +8,11 @@
     "action_file": "php-7.4",
     "dockerfile": "Dockerfile.7.4",
     "tag": "8.5.11-concatfix-apache"
+  },
+  {
+    "action_name": "PHP 7.4.33 concat UAF guarded Apache",
+    "action_file": "php-7.4.33",
+    "dockerfile": "Dockerfile.7.4.33",
+    "tag": "7.4.33-concatfix-apache"
   }
 ]

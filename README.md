@@ -43,3 +43,23 @@ docker build -f base/php7/Dockerfile -t pctf-php:8.5.11-concatfix-fpm-alpine bas
 本地 Apache 构建中 `zval_ptr_dtor` 从 `0x7a38e0` 移到 `0x7a39e0`，
 `zif_system` 仍为 `0x588820`。这些是本次二进制的值，重新构建后应以
 `nm /usr/lib/apache2/modules/libphp.so` 核对。
+
+## PHP 7.4.33 concat 防护构建
+
+`7.4.33-concatfix` 分支使用官方 `php:7.4.33-apache` 源码重新编译。
+`concat81705_guard.patch` 在 `concat_function()` 隐式转换数组、对象或资源之前
+抛出 `Error`，阻断 bug #81705 及 `php-concat-bypass` 使用的错误处理器重入路径。
+标量拼接保持可用。这个 CTF 专用限制会改变 PHP 对非标量拼接的行为。
+
+```sh
+docker build -f base/php7/Dockerfile.7.4.33 \
+  -t pctf-php:7.4.33-concatfix-apache base/php7
+```
+
+镜像保留 `php.ini`、站点目录权限和 flag 初始化逻辑，且不编译 SQLite 驱动。
+GitHub Actions 将构建结果发布为
+`ghcr.io/lzz0403/pctf2025basement/php88:7.4.33-concatfix-apache`。
+
+本补丁只针对 `concat_function()` 的重入利用入口；它不宣称消除 PHP 7.4.33
+的所有内存安全问题。题目的预期利用脚本含 PHP 8.5.11 的硬编码偏移，切换题目
+镜像前需要另行校准并完整验证 7.4.33 的预期解。

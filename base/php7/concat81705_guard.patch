@@ -1,0 +1,17 @@
+--- a/Zend/zend_operators.c
++++ b/Zend/zend_operators.c
+@@ -1815,0 +1816,14 @@
++	/* This challenge does not use implicit array/object/resource concatenation.
++	 * Reject it before conversion can enter a userland error handler or __toString
++	 * while the VM still holds an array element or property result pointer. */
++	zval *left_value = Z_ISREF_P(op1) ? Z_REFVAL_P(op1) : op1;
++	zval *right_value = Z_ISREF_P(op2) ? Z_REFVAL_P(op2) : op2;
++	if (UNEXPECTED(Z_TYPE_P(left_value) == IS_UNDEF || Z_TYPE_P(left_value) > IS_STRING ||
++		Z_TYPE_P(right_value) == IS_UNDEF || Z_TYPE_P(right_value) > IS_STRING)) {
++		zend_throw_error(NULL, "Non-scalar concatenation is disabled in this build");
++		if (op1 != result) {
++			ZVAL_UNDEF(result);
++		}
++		return FAILURE;
++	}
++
